@@ -53,7 +53,8 @@ if (Test-Path $PWD/config/prometheus/targets.json) {
         $addAnother = $true
         while ($addAnother) {
             $target = @{}
-            $target.targets = Read-Host -Prompt "Enter the target IP address (e.g. 10.0.0.1):"
+            $ipAddress = Read-Host -Prompt "Enter the target IP address (e.g. 10.0.0.1):"
+            $target.targets = @($ipAddress)
             $target.labels = @{}
             $target.labels.hostname = Read-Host -Prompt "Enter the target hostname:"
 
@@ -68,7 +69,6 @@ if (Test-Path $PWD/config/prometheus/targets.json) {
         }
     }
 }
-
 
 # Convert the targets to JSON and save it to the targets.json file
 $json = $targets | ConvertTo-Json -Depth 5

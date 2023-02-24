@@ -1,21 +1,21 @@
 version: '3.8'
-
 networks:
   monitoring:
-
+volumes:
+    prometheus_data: {}
+    grafana_data: {}
 services:
-
   prometheus:
     image: prom/prometheus
     container_name: prometheus
     volumes:
       - $PWD/config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - $PWD/config/prometheus/targets.json:/etc/prometheus/targets.json
+      - prometheus_data:/prometheus
     networks:
       - monitoring
     ports:
       - 9090:9090
-
   snmp-exporter:
     image: prom/snmp-exporter
     container_name: snmp-exporter
@@ -25,14 +25,11 @@ services:
       - monitoring
     ports:
       - 9116:9116
-
   grafana:
     image: grafana/grafana
     container_name: grafana
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD="admin"
     volumes:
-      - $PWD/config/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - grafana_data:/var/lib/grafana
       - $PWD/config/grafana/provisioning:/etc/grafana/provisioning
     networks:
       - monitoring

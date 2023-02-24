@@ -1,2 +1,2 @@
 .env
-config/prometheus/targets.json
+config/prometheus/targets.*
